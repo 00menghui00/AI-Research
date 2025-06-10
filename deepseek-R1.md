@@ -11,7 +11,7 @@
 5. Checkpoint：是深度学习训练过程中的重要机制，能够在训练过程中保存模型的状态，防止数据丢失，支持恢复训练（防止意外中断后重新训练）和迁移学习（在其他数据集上微调）
 6. Chain‑of‑Thought (CoT)：是一种通过让 LLM 显示“中间思路”，增强其多步推理能力的提示技术。在最新模型（如 OpenAI 的 o1/Strawberry）中，CoT 被训练成为模型的内部机制，无须显式提示即可“内部思考”
 7. Rejection Sampling：在 LLM 强化训练（如 RLHF、DeepSeek‑R1）中，Rejection Sampling 用于从多次生成的候选中选取奖励最高的样本，并用这些优秀样本进行监督微调（如 SFT）
-
+8. 生成式蒸馏（生成式Knowledge Distillation（KD））：用强模型生成样本 → 这些样本被视作“知识” → 小模型学习这些数据的输出 → 达到提升效果
 
 
 #### 一些结论：
