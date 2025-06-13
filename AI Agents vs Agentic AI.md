@@ -19,7 +19,7 @@
 
 #### 重要观点：
 1. 随着领域从生成式代理向越来越自主的代理式 AI 系统发展，明确 AI 代理和代理式 AI 之间的技术和概念边界变得至关重要。虽然这两种范式都基于 LLMs 并扩展了生成系统的能力，但它们体现了根本不同的架构、交互模型和自主程度。AI 代理通常被设计为单一实体系统，通过利用外部工具、应用顺序推理以及整合实时信息来执行目标导向的任务，以完成定义明确的功能。相比之下，代理式 AI 系统由多个专业化的代理组成，这些代理在更广泛的流程中协调、沟通并动态分配子任务，以实现共同目标。这种架构差异突出了在可扩展性、适应性和应用范围上的明显且重要的区别。理解并形式化这两种范式（AI Agents 和 Agentic AI）之间的分类学具有科学意义，原因如下。首先，它通过使计算框架与问题复杂性相一致，从而实现更精确的系统设计，确保 AI Agents 用于模块化、工具辅助的任务，而 Agentic AI 则用于协调多智能体操作。此外，它还允许进行适当的基准测试和评估：为执行单个任务而设计的智能体与为完成复杂、协调任务而设计的分布式智能体系统，在性能指标、安全协议和资源需求上存在显著差异。此外，清晰的分类学通过防止在设计原则上的误用（例如，在为单智能体执行设计的系统中假设智能体间协作）来减少开发效率低下。如果没有这种清晰度，开发者和从业者将面临低估需要智能体协调的复杂场景的风险，以及过度设计可以用单个 AI Agent 解决的简单应用的风险。
-2. 
+2. Chitra 等人[P. Chitra and A. Saleem Raja, “Artificial intelligence (ai) algorithm and models for embodied agents (robots and drones),” in Building Embodied AI Systems: The Agents, the Architecture Principles, Challenges, and Application Domains, pp. 417–441, Springer, 2025.]全面概述了支撑具身代理的基础 AI 算法，突出了计算机视觉、SLAM、强化学习和传感器融合的集成。这些组件共同支持在动态环境中的实时感知和自适应导航。Kourav 等人[S. Kourav, K. Verma, and M. Sundararajan, “Artificial intelligence algorithm models for agents of embodiment for drone applications,” in Building Embodied AI Systems: The Agents, the Architecture Principles, Challenges, and Application Domains, pp. 79–101, Springer, 2025.]进一步强调了自然语言处理和 LLMs 在根据人类指令生成无人机行动计划中的作用，展示了 LLMs 如何支持自然交互和任务规划。
 
 
 #### 知识补充：
