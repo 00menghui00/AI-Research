@@ -25,6 +25,6 @@
 #### 知识补充：
 1. CLIP（Contrastive Language–Image Pretraining）：CLIP 是 OpenAI 于 2021 年推出的一款多模态模型。它通过对比学习方法联合训练图像编码器和文本编码器，将图像和对应描述映射到统一的语义嵌入空间。这样一来，当给定图像时，CLIP 能判断哪条文本描述与其最匹配，反之亦然
 2. BLIP‑2（Bootstrapping Language‑Image Pre-training 2）：由 Salesforce 提出，是一套高效的视觉–语言预训练方案。它由三部分组成：
-图像编码器（通常为 CLIP 或 ViT）——参数冻结
-轻量级 Q‑Former（Query Transformer）——用于桥接视觉和语言特征，Q‑Former 的核心作用是从图像特征中提取查询（query）嵌入，使其与 LLM 兼容，从而实现跨模态理解与生成能力 
-大语言模型（LLM）——如 OPT、Flan‑T5 等，参数冻结
+- 图像编码器（通常为 CLIP 或 ViT）——参数冻结
+- 轻量级 Q‑Former（Query Transformer）——用于桥接视觉和语言特征，Q‑Former 的核心作用是从图像特征中提取查询（query）嵌入，使其与 LLM 兼容，从而实现跨模态理解与生成能力 
+- 大语言模型（LLM）——如 OPT、Flan‑T5 等，参数冻结
