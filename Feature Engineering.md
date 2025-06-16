@@ -16,7 +16,7 @@
 
 
 
-# 深度学习领域的特征工程（Manus调研）
+# 深度学习领域的特征工程（Manus调研，主要面向CV、NLP、Time Series Prediction）
 
 ## 引言
 
