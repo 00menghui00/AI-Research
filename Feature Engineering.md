@@ -33,7 +33,7 @@
 
 
 
-# 深度学习领域的特征工程（Manus调研，主要面向CV、NLP、Time Series Prediction）
+# 深度学习领域的特征工程（Manus调研，主要面向CV、NLP、Time Series Prediction、AI4S）
 
 ## 引言
 
@@ -356,4 +356,71 @@ NLP领域的特征工程已经从传统的手工构建语言学特征，发展�
 [11] Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2019). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. In Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers) (pp. 4171-4186). (BERT)
 
 [12] Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., & Sutskever, I. (2019). Language Models are Unsupervised Multitask Learners. OpenAI Blog, 1(8). (GPT)
+
+## 6. 科学计算领域的特征工程
+
+科学计算（Scientific Computing）是一个广泛的领域，涉及使用计算机解决数学、物理、工程等科学问题。传统上，科学计算依赖于数值方法、有限元分析、计算流体力学（CFD）等。近年来，深度学习在科学计算领域展现出巨大潜力，尤其是在解决偏微分方程（PDEs）、模拟复杂物理系统、材料科学、生物信息学等方面。在这个交叉领域，特征工程也扮演着独特的角色。
+
+### 6.1 科学计算中的数据特点与挑战
+
+科学计算中的数据通常具有以下特点：
+
+*   **高维性**：例如，物理模拟结果可能是多维的场数据（如速度场、温度场）。
+*   **结构化与非结构化并存**：数据可能来自规则网格（结构化）或不规则点云（非结构化）。
+*   **物理约束**：数据往往受到严格的物理定律（如守恒律、边界条件）的约束。
+*   **稀疏性或噪声**：实验数据可能稀疏或包含测量噪声。
+*   **多尺度性**：物理现象可能在不同时间或空间尺度上发生。
+
+这些特点使得直接将原始科学数据输入到通用深度学习模型中面临挑战，因此需要进行有效的特征工程。
+
+### 6.2 深度学习时代科学计算的特征工程
+
+在科学计算领域，深度学习的特征工程主要体现在如何将物理信息、数学结构和数据特性有效地编码到神经网络的输入中，以及如何利用深度学习模型本身来学习物理相关的特征。
+
+#### 6.2.1 物理信息神经网络 (Physics-Informed Neural Networks, PINNs)
+
+PINNs [13] 是一种将物理定律（通常以偏微分方程的形式）作为正则化项融入神经网络损失函数中的深度学习模型。PINNs的“特征工程”体现在以下几个方面：
+
+*   **输入特征的构建**：对于PDEs求解，输入特征通常是空间坐标 (`x`, `y`, `z`) 和时间 (`t`)。这些输入可以直接作为神经网络的输入。
+*   **物理约束的编码**：通过在损失函数中加入物理定律的残差项，PINNs强制神经网络学习到的解满足物理定律。这可以看作是一种隐式的特征工程，因为模型被引导去学习符合物理规律的特征表示。
+*   **边界条件和初始条件**：这些条件作为额外的约束，也被编码到损失函数中，指导模型的学习。
+
+PINNs的优势在于不需要大量的标记数据，而是利用物理定律作为“无监督”的指导，从而在数据稀疏的科学计算问题中表现出色。
+
+#### 6.2.2 图神经网络 (Graph Neural Networks, GNNs)
+
+在科学计算中，许多系统可以自然地表示为图结构，例如分子结构、材料晶格、相互作用的粒子系统等。GNNs [14] 能够直接在图结构数据上进行操作，学习节点和边的特征表示，这使得它们成为处理这类科学计算问题的强大工具。
+
+*   **节点特征**：可以是物理量（如原子类型、电荷、温度）或结构信息（如连接数）。
+*   **边特征**：可以是连接类型、距离、相互作用力等。
+*   **图结构作为特征**：GNNs通过消息传递机制，聚合邻居信息来更新节点表示，从而隐式地学习到图的拓扑结构特征。
+
+GNNs在分子动力学模拟、材料性质预测、药物发现等领域有广泛应用。
+
+#### 6.2.3 傅里叶神经算子 (Fourier Neural Operators, FNOs)
+
+FNOs [15] 是一种新型的深度学习架构，旨在学习从一个函数空间到另一个函数空间的映射，特别适用于解决参数化的偏微分方程。FNOs通过在傅里叶空间中进行操作，能够捕捉到全局信息，并且对网格变化具有不变性。
+
+*   **输入函数作为特征**：FNOs直接将整个函数（例如初始条件、边界条件）作为输入，而不是离散的采样点。这使得模型能够学习到函数的整体特征。
+*   **频域特征学习**：通过在傅里叶域中进行卷积操作，FNOs能够有效地捕捉到不同频率的模式。这对于处理具有复杂空间模式的物理系统非常重要。
+*   **多尺度特征学习**：通过在不同频率上进行操作，FNOs能够学习到不同尺度的物理特征，这对于模拟湍流等复杂现象至关重要。
+
+#### 6.2.5 结合传统数值方法的特征
+
+深度学习在科学计算中并非完全取代传统数值方法，而是可以与其结合。例如，可以将传统数值方法计算出的中间量或物理量作为深度学习模型的输入特征，或者将深度学习模型学习到的特征反过来用于改进数值算法。
+
+### 6.3 总结
+
+科学计算领域的特征工程是深度学习与物理、数学等领域知识深度融合的体现。它不再局限于简单的数据转换，而是通过将物理定律、几何结构、多尺度信息等编码到神经网络的输入、损失函数或架构中，使得深度学习模型能够学习到更具物理意义和解释性的特征。PINNs、GNNs、FNOs等模型的出现，正是这种新型特征工程的代表，它们为解决复杂的科学和工程问题提供了强大的新工具。
+
+
+
+## 参考文献
+
+[13] Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational Physics, 378, 686-707. (PINNs)
+
+[14] Battaglia, P. W., Hamrick, J. B., Bapst, V., Sanchez-Gonzalez, A., Zambaldi, V., Fakoor, M., ... & Lillicrap, T. (2018). Relational inductive biases, deep learning, and graph networks. arXiv preprint arXiv:1806.01261. (GNNs)
+
+[15] Li, Z., Kovachki, N., Azizzadenesheli, K., Liu, B., Bhattacharya, K., Stuart, A., & Anandkumar, A. (2021). Fourier Neural Operator for Parametric Partial Differential Equations. International Conference on Learning Representations (ICLR). (FNOs)
+
 
