@@ -3,8 +3,16 @@
 
 ## FastMCP介绍
 
-FastMCP 2.0 has a comprehensive set of features that go far beyond the core MCP specification, all in service of providing the simplest path to production. These include deployment, auth, clients, server proxying and composition, generating servers from REST APIs, dynamic tool rewriting, built-in testing tools, integrations, and more.
-FastMCP 2.0 具有一套全面的功能，远远超出了核心 MCP 规范，所有这些都是为了提供最简单的生产路径 。这些功能包括部署、身份验证、客户端、服务器代理和组合、从 REST API 生成服务器、动态工具重写、内置测试工具、集成等。
+### 简介
+
+##### FastMCP 2.0 具有一套全面的功能，远远超出了核心 MCP 规范，所有这些都是为了提供最简单的生产路径 。
+  这些功能包括部署、身份验证、客户端、服务器代理和组合、从 REST API 生成服务器、动态工具重写、内置测试工具、集成等。(FastMCP 2.0 has a comprehensive set of features that go far beyond the core MCP specification, all in service of providing the simplest path to production. These include deployment, auth, clients, server proxying and composition, generating servers from REST APIs, dynamic tool rewriting, built-in testing tools, integrations, and more.)
+
+##### MCP 服务器可以：
+1. 通过 Resources 公开数据（可以把这些看作是 GET 端点;它们用于将信息加载到 LLM 的上下文中）（Expose data through Resources (think of these sort of like GET endpoints; they are used to load information into the LLM’s context)）
+2. 通过工具提供功能（有点像 POST 端点;它们用于执行代码或以其他方式产生副作用）（Provide functionality through Tools (sort of like POST endpoints; they are used to execute code or otherwise produce a side effect))
+3. 通过 Prompts（用于 LLM 交互的可重用模板）定义交互模式(Define interaction patterns through Prompts (reusable templates for LLM interactions))
+
 
 ## 知识补充
 
