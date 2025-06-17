@@ -14,7 +14,7 @@ FastMCP 2.0 具有一套全面的功能，远远超出了核心 MCP 规范，所
    REST API 的核心概念和特点：
 * 什么是API？
 API（Application Programming Interface）是一组定义和协议，允许不同的应用程序或服务之间进行通信和数据交换。234 简单来说，API 是一种机制，支持应用程序或服务访问另一个应用程序、服务或数据库中的资源。
-什么是REST？
+* 什么是REST？
 REST（Representational State Transfer，表述性状态转移）是一种软件架构风格，由计算机科学家 Roy Fielding 于2000年提出。56 它定义了一系列用于构建Web API 的规则和准则，旨在提高系统的可扩展性、可靠性和可维护性。
 REST API 的特点：
 资源导向： REST API 将所有内容抽象为“资源”，每个资源都有一个唯一的标识符（URI，统一资源标识符）。689 客户端通过URI来定位和操作这些资源。
