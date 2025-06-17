@@ -13,6 +13,18 @@
 2. 通过工具提供功能（有点像 POST 端点;它们用于执行代码或以其他方式产生副作用）（Provide functionality through Tools (sort of like POST endpoints; they are used to execute code or otherwise produce a side effect))
 3. 通过 Prompts（用于 LLM 交互的可重用模板）定义交互模式(Define interaction patterns through Prompts (reusable templates for LLM interactions))
 
+## Server（服务端）
+
+### 支持Tag-Based Filtering  （基于标签的筛选）
+
+### 支持 Server Composition （服务器组合）
+
+FastMCP 支持使用 import_server（静态复制）和 mount（实时链接）将多个服务器组合在一起。这允许您将大型应用程序组织成模块化组件或重用现有服务器。
+
+要将两个不同的MCP服务端集成到一个客户端中一起使用，最常见和推荐的做法是创建一个“主”MCP服务端，然后让这个主服务端通过 mount 机制来“挂载”或代理这两个独立的MCP服务端。 客户端只需要连接到这个主服务端即可。直接让客户端同时连接两个服务端并管理它们的连接会很复杂。更好的方法是引入一个中间层，这个中间层（即“主”MCP服务端）负责聚合或代理其他服务。
+
+
+
 
 ## 知识补充
 
