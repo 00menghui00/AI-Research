@@ -64,4 +64,10 @@ Each leaf node has one of three possible requirement types, which determines how
 - 由于完整提交通常过长，无法完全适配模型的上下文，我们通过让裁判按相关性对代码库中的文件进行排序，仅包含排名前十的文件来过滤代码库，并将其置于上下文中。然后我们提示裁判评估叶节点的需求是否已满足。为了克服 LLM 上下文窗口的限制，并使其能够评估大型、复杂的代码提交，采用分而治之的策略：
  **信息筛选**： 通过一个预处理步骤，识别并只选择与当前评估任务最相关的少量（例如前十个）文件。
  **局部评估**： 让 LLM 评判者专注于评估这些相关文件中的特定、细粒度的“叶节点”要求。
-- 除非另有说明，我们使用 OpenAI 的 o3-mini 作为裁判的后端模型。我们估计使用 o3-mini 对单个提交进行评分，在 OpenAI API 信用额度上大约需要 66 美元![](https://arxiv.org/html/2504.01848v3#S3.T2:~:text=7Based%20on%20public%20OpenAI%20o1%20API%20pricing%20as%20of%202025/03/21.%20On%20average%20SimpleJudge%20uses%20around%2050%2C000%2C000%20input%20tokens%20and%202%2C000%2C000%20output%20tokens%20per%20paper.)。对于 PaperBench Code-Dev，每篇论文的成本降至约 10 美元。我们的 LLM 裁判比雇佣专家人工评分要显著便宜和快速
+- 除非另有说明，我们使用 OpenAI 的 o3-mini 作为裁判的后端模型。我们估计使用 o3-mini 对单个提交进行评分，在 OpenAI API 信用额度上大约需要 66 美元。对于 PaperBench Code-Dev，每篇论文的成本降至约 10 美元。我们的 LLM 裁判比雇佣专家人工评分要显著便宜和快速。
+
+#### 3.2 Evaluating Judges with JudgeEval
+JudgeEval，一个用于评估 PaperBench 环境下自动化裁判（SimpleJudge）准确性的基准。
+
+- 为了构建 JudgeEval，我们从 PaperBench 数据集的四个论文和 PaperBench 开发集中的一个论文中使用了部分复制。这些复制要么从头开始创建，要么通过修改原始作者的代码库创建。我们手动根据相应论文的评分标准对每个复制尝试进行评分，并在评估自动裁判时将这些人工评级的叶节点作为真实标签。
+- 由于对每个叶节点的评分是一个二分类任务，我们使用标准的二分类指标来评估 JudgeEval。**agent如何做分类？依靠LLM自身的能力和定制框架（提示词、工具调用、多智能体协作等方式）**
