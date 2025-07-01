@@ -33,7 +33,9 @@
 - 每个提交都根据所有满足的评分标准要求的权重调整比例进行评分，其中 100% 对应于完美复制且满足所有叶节点要求。我们的主要指标是所有论文的平均复制分数 。
 
 #### 1.4 Requirement Types
-Each leaf node has one of three possible requirement types, which determines how it is graded.叶节点可以是代码开发、执行或结果匹配，这决定了在根据该叶节点评分时向评委展示哪些文件。
+Each leaf node has one of three possible requirement types, which determines how it is graded.
+
+叶节点可以是代码开发、执行或结果匹配，这决定了在根据该叶节点评分时向评委展示哪些文件。
 
 - *结果匹配*叶节点评估执行提交是否包含复制论文中特定结果的证据。结果匹配节点通过查看 reproduce.sh 和 reproduce.log 以及复制步骤中创建或修改的任何文件来进行评分。
 - *执行*叶节点在运行 reproduce.sh 脚本时，评估是否发生了特定的执行结果。鉴于结果匹配节点尤其难以实现，拥有多个关联的执行节点允许提交在即使相应的结果匹配节点未实现的情况下，也能因标记部分进展而获得分数。执行节点通过查看 reproduce.sh、reproduce.log 和源代码进行评估。
