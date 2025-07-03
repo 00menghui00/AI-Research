@@ -1,5 +1,6 @@
 # 从原理到实践：万字长文深入浅出教你优雅开发复杂AI Agent
-地址：https://zhuanlan.zhihu.com/p/1919338285160965135
+- 地址：https://zhuanlan.zhihu.com/p/1919338285160965135
+- 文中提出了两种使用Golang快速构建企业级agent的框架
 
 ## 背景
 - 最近，大家都在讨论MCP（Model Context Protocol），它通过标准化协议，实现了工具和AI应用的解耦，推动了AI Agent应用研发范式的转变。尽管MCP非常有价值，但它并非万能。一个"聪明的"AI Agent不仅仅依赖于MCP。MCP主要解决了工具调用、Prompt模板、资源访问等标准化问题，但对于AI Agent的工具选择、任务规划、多Agent协同等核心挑战，仍存在局限，并在实际复杂应用场景中暴露出一些不足。
