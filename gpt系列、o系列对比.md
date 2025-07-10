@@ -90,7 +90,7 @@ o 系列（o1, o3）的核心技术可以概括为两点：
 *   **论文名称:** *Training language models to follow instructions with human feedback* (通过人类反馈训练语言模型以遵循指令)
 *   **发布时间:** 2022年3月
 *   **核心贡献:**
-    *   **首次系统性地提出了 RLHF (Reinforcement Learning from Human Feedback) 框架**，也就是您上一问中提到的“先模仿、再打分”的两步训练法。
+    *   **首次系统性地提出了 RLHF (Reinforcement Learning from Human Feedback) 框架**，使用“先模仿（监督学习）、再打分（强化学习）”的两步训练法。
     *   **证明了“对齐”比“规模”更重要**：论文明确指出，一个经过 RLHF 调教的 13 亿参数小模型，比 1750 亿参数的原始 GPT-3 更受用户青睐。
     *   **奠定了 ChatGPT 的技术基础**：ChatGPT 本质上就是 InstructGPT 技术在更大、更强的模型（GPT-3.5）上的应用和优化。o 系列的“对齐”能力，正是源于此。
 
