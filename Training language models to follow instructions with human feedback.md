@@ -38,3 +38,5 @@
 - 针对奖励模型构建特定的损失函数（参数具体含义见原论文）![image](https://github.com/user-attachments/assets/8707d9b6-8db0-485e-af0e-feb5bee406d0)
 
 - 最后，由于 RM 损失对奖励的偏移不变，我们使用偏差对奖励模型进行归一化，以便在执行强化学习之前，标注者的演示能够获得 0 分的平均分数。
+
+#### <span style="color:red">Reinforcement learning (RL)（强化学习）</span>
