@@ -1,5 +1,6 @@
 # Tree of Thoughts: Deliberate Problem Solving with Large Language Models
-原文地址：https://arxiv.org/html/2305.10601?_immersive_translate_auto_translate=1
+- 原文地址：https://arxiv.org/html/2305.10601?_immersive_translate_auto_translate=1
+- 代码仓库：https://github.com/princeton-nlp/tree-of-thought-llm
 
 ## 概念梳理：
 
