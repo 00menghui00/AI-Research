@@ -9,6 +9,10 @@
 介绍ReAct框架，并将传统 ReAct与融合 MCP（Model Context Protocol）的 ReAct进行对比分析。
 - https://github.com/00menghui00/AI-Research/blob/Agent/What%20is%20a%20ReAct%20agent.md
 
+## Reflexion框架
+
+- https://www.promptingguide.ai/techniques/reflexion
+
 ----
 ----
 ----
