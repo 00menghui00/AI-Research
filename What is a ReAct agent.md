@@ -88,3 +88,27 @@ ReAct 代理的实用性主要源于 ReAct 框架的一些固有特性：
 | **运维复杂度** | 多处管理、配置分散   | 集中管理、统一监控           |
 
 通过将 MCP 与 ReAct 相结合，既保留了 ReAct 在“交替推理与行动”上的灵活性和可解释性，又获得了标准化、可扩展、安全审计和高可用运维的工程级能力，极大提升了多 Agent 系统的可靠性和可维护性。
+
+---
+---
+---
+---
+---
+
+社区里已经涌现出不少在 ReAct 基础上，集成了检索、记忆、计划、并行/串行编排等额外能力的“增强版”ReAct 框架。下面列举几个目前比较高效、热门的方案，并简单说明它们的特色功能：
+
+| 框架                       | 核心特色                       | 集成功能                                                                                                             | 典型场景/链接                                                                                                             |
+| :----------------------- | :------------------------- | :--------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| **LangChain Agents**     | ReAct 核心 + 丰富工具生态          | ● 多种 Agent 模板（ReAct, ToolSpec, Zero-Shot）<br>● 动态检索（RAG）<br>● 本地常驻记忆（ConversationBuffer、Summary）<br>● 并行/串行工作流编排 | 适用于 RAG 问答、自动化脚本、数据分析<br>[https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)     |
+| **Microsoft PromptFlow** | 可视化流水线 + 监控                | ● 流式编排（串/并行 Flow）<br>● 模型 + 工具调用统一管理<br>● 版本管理、性能监控、自动日志<br>● 一键部署到 Azure                                        | 企业级 LLM 应用、A/B 测试、自动化工作流<br>[https://aka.ms/promptflow](https://aka.ms/promptflow)                                  |
+| **Semantic Kernel**      | 规划器 + 插件式工具                | ● “Planner” 模块：生成子任务列表<br>● Memory Store（向量化历史对话）<br>● Plugin SDK（检索、计算、IoT 控制）                                  | 人机混合工作流、智能助理、IoT 控制<br>[https://github.com/microsoft/semantic-kernel](https://github.com/microsoft/semantic-kernel) |
+| **AutoGen (Microsoft)**  | 多 Agent 协作 + 角色分工          | ● 主从/叉并式 Agent 协作<br>● 情景记忆和长期记忆<br>● 任务提醒、失败重试<br>● 与 Azure OpenAI、Azure Functions 原生集成                         | 复杂业务流程自动化、DevOps 脚本生成<br>[https://github.com/microsoft/autogen](https://github.com/microsoft/autogen)               |
+| **Haystack AgentFlow**   | 检索 + ReAct + Summarization | ● 内置检索（Elasticsearch、FAISS）<br>● ReAct 工具调用<br>● 结果汇总与摘要<br>● 可视化 UI 组件                                          | 企业知识库问答、文档自动化处理<br>[https://github.com/deepset-ai/haystack](https://github.com/deepset-ai/haystack)                 |
+| **AgentVerse**           | 大规模并行 Agent 仿真             | ● 上千 Agent 并发<br>● 多种交互拓扑（社交网络、市场）<br>● 自定义回合规则与奖励                                                               | 多 Agent 经济/社会仿真、游戏 AI<br>[https://agentverse.org](https://agentverse.org)                                           |
+| **BabyAGI / AutoGPT**    | 任务分解 + 自反馈                 | ● 目标→分解→执行→反馈 循环<br>● 任务队列管理<br>● 可插入自定义工具与记忆                                                                    | 端到端自动化任务（写作、代码、调研）                                                                                                  |
+
+– **共同特点**
+
+1. 以 ReAct 为思考→行动范式核心，管道式分离“思考”“行动”逻辑。
+2. 集成了**检索（RAG）**、**长期/会话记忆**、**任务规划**、**并行/串行编排**等功能模块。
+3. 支持**动态加载工具**、**可视化监控**和**失败重试**等工程化特性。
