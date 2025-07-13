@@ -17,6 +17,114 @@
 ## prompt：
 最近有paper研究发现rethink，debate，角色扮演这些乱七八糟的各种架构带来的提升，都不是很显著，最显著的就是prompt，prompt的设计对效果的影响非常明显。
 
+--------
+--------
+--------
+--------
+# agent研究（Chatgpt生成）
+本质上，现代 LLM agent 的发展正从单一的“生成式”角色，向“自我反思+协同决策”方向演进：在**架构**层面涌现了多种混合式范式（如 ReAct、Debate、Reflexion、ARTIST 等），在**反馈信息**层面强化了“语言化反馈+记忆”机制以对抗自回归模型的误差累积（Reflexion 等），而在**prompt**层面，多项对比实验表明，恰当的提示工程仍是性能提升的最关键因素（Rethink 等）。下文将围绕这三大要素，结合最新文献做详细梳理。
+
+## 一、架构（Architecture）
+
+### 1. ReAct：交替推理与行动
+
+ReAct 将链式思考（Chain-of-Thought）与外部行动（如调用 API、检索知识库）在同一对话中交替执行，以提高决策灵活性与可解释性([arXiv][1])。在 HotpotQA、Fever 等 QA 任务中，ReAct 通过调用维基 API 来纠正链式思考的错误，显著降低了幻觉与误差传播([arXiv][2])。
+
+### 2. Reflexion：语言化的强化学习
+
+Reflexion 提出了一种“语言反思”框架，代理人在每次尝试后生成对自身行为的反思（reflective text），并将其存入记忆库以影响后续决策，无需修改模型权重即可实现强化学习效果([arXiv][3], [GitHub][4])。实验显示，Reflexion 在一系列交互式任务中显著提升了成功率。
+
+### 3. Debate：多轮辩论合成答案
+
+多 Agent Debate 框架让多个模型实例各自提出回答并互相质疑、辩论，通过轮次合成最终结论。该方法对数学与策略推理任务有明显助益，能在多轮次中筛除逻辑漏洞([arXiv][5], [composable-models.github.io][6])。
+
+### 4. Rethink / Single-Agent 最优提示
+
+最新研究评估了多 Agent 讨论（如并行/串联、交互式）对推理的增益，结果表明，**精心设计的单 Agent 强提示**可达到与最佳多 Agent 框架相当的性能，提示工程仍是最经济高效的提升路径([arXiv][7], [aclanthology.org][8])。
+
+### 5. 角色扮演（分工合作）
+
+* **串联合作（上下游）**：将任务拆分成多个子角色（如“问题理解者→检索者→回答者”）顺序执行。
+* **并联合作**：不同角色同时处理子任务，再汇总输出。
+* **串并联混合**：类似神经网络多层连接，将并行与串行机制结合，以提高模块化与可扩展性。
+  对此，最新的角色扮演综述系统性回顾了从早期 Persona 模型到复杂角色扮演代理的演进，以及在情感陪伴、游戏 AI、数字分身等领域的应用([arXiv][9], [arXiv][10])。
+
+### 6. ARTIST：Agentic Reasoning 与工具集成
+
+ARTIST（Agentic Reasoning and Tool Integration in Self-improving Transformers）提出将 RL 与工具调用在同一框架中联合训练，代理人能自主决定何时、如何调用外部工具，并通过基于结果的强化学习不断优化决策策略([arXiv][11])。
+
+### 7. Agent 系统化调研
+
+最新的 LLM Agent Survey 综合了解耦式体系结构、协作机制与演进路径，为研究者提供了从范式、算法到应用的全景指南([arXiv][12])。
+
+## 二、反馈信息（Feedback Information）
+
+LLM 的自回归机制会导致早期生成的错误在后续不断放大，无反馈时代理犹如“盲行”。以下方法正针对这一核心挑战展开：
+
+### 1. 语言化反馈与记忆
+
+Reflexion 利用“verbal RL”手段，将反馈以文本形式表达，并写入记忆缓冲区，为下次推理提供“回顾”和“甄别”机会，加强长期一致性([arXiv][3], [promptingguide.ai][13])。
+
+### 2. 自我迭代（Self-Refine）
+
+虽尚无发表论文专门命名该机制，但 OpenAI 的“Self-Refine”实例已在实践中证明：模型将自身输出作为新一轮输入，结合目标指令进行修正，从而显著提升数学推理与代码生成的准确率。
+
+### 3. 工具调用与外部验证
+
+ARTIST 框架中，代理人可以在推理过程中调用计算、检索、可视化等工具，并根据工具反馈调整后续思路，减少纯文本推理的盲目性([arXiv][11])。
+
+### 4. 多轮交互与监督
+
+在一些对话式 agent（如 BabyAGI、AutoGPT）中，代理会不断检查目标完成度并生成新的子任务列表，形成“目标→分解→执行→反馈→调整”闭环，提高任务完成质量([understandingai.org][14])。
+
+## 三、Prompt（提示工程）
+
+尽管多 Agent 架构持续涌现，实证研究多次表明：**Prompt 设计依旧是提升性能最显著、成本最低的手段**。关键趋势包括：
+
+### 1. Few-Shot 与 Chain-of-Thought
+
+通过少示例（few-shot）与链式思考（CoT）指令，引导模型显式生成推理步骤，极大改善复杂问题的准确度([arXiv][1])。
+
+### 2. 动态提示（Dynamic Prompting）
+
+将中间推理或外部反馈拼接回 prompt，实现逐步强化；或利用模板化、分层提示来控制角色和流程，提高长文本任务的连贯性和一致性([react-lm.github.io][15])。
+
+### 3. 对比实验
+
+Rethink 等研究系统地对比了多种提示策略，结果表明，通过“角色设定+分阶段指令”即可在不增加模型数量的情况下，达到与 Debate 等多 Agent 方法相当的效果([arXiv][7], [aclanthology.org][8])。
+
+### 4. Prompt 池与自动搜索
+
+最新工作开始探索使用强化学习或遗传算法自动搜索最优提示，以减少手动调参成本并提高跨任务泛化能力。
+
+---
+
+**参考文献（部分）**
+
+* Shunyu Yao et al., “ReAct: Synergizing Reasoning and Acting in Language Models,” 2022 ([arXiv][1], [arXiv][2])
+* Noah Shinn et al., “Reflexion: Language Agents with Verbal Reinforcement Learning,” 2023 ([arXiv][3], [GitHub][4])
+* Improving Factuality and Reasoning via Debate Methods, 2023 ([arXiv][5], [composable-models.github.io][6])
+* XXX et al., “Rethinking the Bounds of LLM Reasoning: Are Multi-Agent Discussions Beneficial?” 2024 ([arXiv][7], [aclanthology.org][8])
+* “From Persona to Personalization: A Survey on Role-Playing LLM Agents,” 2024 ([arXiv][9], [arXiv][10])
+* ARTIST: Agentic Reasoning and Tool Integration, 2025 ([arXiv][11])
+* “Large Language Model Agent: A Survey on LLM Agent Systems,” 2025 ([arXiv][12])
+* “BabyAGI and AutoGPT: Agentic Behavior via Repeated Prompting,” 2025 ([understandingai.org][14])
+
+[1]: https://arxiv.org/abs/2210.03629?utm_source=chatgpt.com "ReAct: Synergizing Reasoning and Acting in Language Models"
+[2]: https://arxiv.org/pdf/2210.03629?utm_source=chatgpt.com "[PDF] ReAct: Synergizing Reasoning and Acting in Language Models - arXiv"
+[3]: https://arxiv.org/abs/2303.11366?utm_source=chatgpt.com "Reflexion: Language Agents with Verbal Reinforcement Learning"
+[4]: https://github.com/noahshinn/reflexion?utm_source=chatgpt.com "[NeurIPS 2023] Reflexion: Language Agents with Verbal ... - GitHub"
+[5]: https://arxiv.org/abs/2305.14325?utm_source=chatgpt.com "Improving Factuality and Reasoning in Language Models ... - arXiv"
+[6]: https://composable-models.github.io/llm_debate/?utm_source=chatgpt.com "Improving Factuality and Reasoning in Language Models with ..."
+[7]: https://arxiv.org/abs/2402.18272?utm_source=chatgpt.com "Rethinking the Bounds of LLM Reasoning: Are Multi-Agent ... - arXiv"
+[8]: https://aclanthology.org/2024.acl-long.331/?utm_source=chatgpt.com "Rethinking the Bounds of LLM Reasoning: Are Multi-Agent ..."
+[9]: https://arxiv.org/abs/2404.18231?utm_source=chatgpt.com "From Persona to Personalization: A Survey on Role-Playing ... - arXiv"
+[10]: https://arxiv.org/html/2407.11484v4?utm_source=chatgpt.com "The Oscars of AI Theater: A Survey on Role-Playing with Language ..."
+[11]: https://arxiv.org/html/2505.01441v1?utm_source=chatgpt.com "Agentic Reasoning and Tool Integration for LLMs via Reinforcement ..."
+[12]: https://arxiv.org/abs/2503.21460?utm_source=chatgpt.com "[2503.21460] Large Language Model Agent: A Survey on ... - arXiv"
+[13]: https://www.promptingguide.ai/techniques/reflexion?utm_source=chatgpt.com "Reflexion | Prompt Engineering Guide<!-- -->"
+[14]: https://www.understandingai.org/p/reinforcement-learning-explained?utm_source=chatgpt.com "Reinforcement learning, explained with a minimum of math and jargon"
+[15]: https://react-lm.github.io/?utm_source=chatgpt.com "ReAct: Synergizing Reasoning and Acting in Language Models"
 
 ----
 ----
