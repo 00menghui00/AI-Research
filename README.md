@@ -2,10 +2,12 @@
 
 # 研究方向：
 ## Agent核心（综述型）
-https://github.com/00menghui00/AI-Research/blob/Agent/Agent%E6%A0%B8%E5%BF%83.md
+对Agent的关键构建成分综述。
+- https://github.com/00menghui00/AI-Research/blob/Agent/Agent%E6%A0%B8%E5%BF%83.md
 
 ## ReAct框架
-https://github.com/00menghui00/AI-Research/blob/Agent/What%20is%20a%20ReAct%20agent.md
+介绍ReAct框架，并将传统 ReAct与融合 MCP（Model Context Protocol）的 ReAct进行对比分析。
+- https://github.com/00menghui00/AI-Research/blob/Agent/What%20is%20a%20ReAct%20agent.md
 
 ----
 ----
