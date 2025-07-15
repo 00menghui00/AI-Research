@@ -11,10 +11,14 @@
 <img width="939" height="673" alt="image" src="https://github.com/user-attachments/assets/952aa550-0f61-44ed-aaa9-e9f56e1e35eb" />
 
 #### Reflexion 由三个不同的模型组成
+- Actor：根据状态观察生成文本和动作。Actor 在环境中采取行动并接收观察结果，从而产生轨迹。思维链 (CoT) 和 ReAct 被用作 Actor 模型。此外还添加了一个记忆组件，为智能体提供额外的上下文。（两个框架之间的关系：Reflexion是元框架，Reflexion的设计就是为了增强像ReAct这样的智能体的。Reflexion提供了一个学习和迭代的闭环，而ReAct则是这个环路中负责执行和与环境互动的关键执行者。）
+- 
 
 
 
-
+---
+---
+---
 
 # 概念理解
 1.  **通过语言反馈强化**:
