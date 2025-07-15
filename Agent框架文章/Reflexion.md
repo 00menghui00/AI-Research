@@ -27,7 +27,9 @@ Reflexion 流程的关键步骤包括：a) 定义任务，b) 生成轨迹，c) �
 - 可解释性和显式记忆很重要：与传统的强化学习方法相比，Reflexion 提供了一种更可解释和显式的情景记忆形式。代理的自我反思被存储在其记忆中，从而更容易分析和理解其学习过程。
 
 #### Reflexion 在以下任务中有效：
-
+- 序列决策（Sequential decision-making）：Reflexion 代理在 AlfWorld 任务中的表现得到提升，这些任务涉及在各种环境中导航并完成多步目标。
+- 推理：Reflexion 提升了在 HotPotQA 这个需要跨文档推理的问答数据集上代理的性能。
+- 编程：Reflexion 代理在 HumanEval 和 MBPP 等基准测试中编写更好的代码，在某些情况下实现了最先进的结果。
 
 ---
 ---
