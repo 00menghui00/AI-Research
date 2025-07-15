@@ -1,4 +1,26 @@
-# agent
+# Introduction to AI Agents
+文章地址：https://www.promptingguide.ai/agents/introduction
+
+## What is an Agent
+
+## Why build with Agents
+
+## Common Use Cases for AI Agents
+
+## Agent Components
+
+### Planning: The Brain of the Agent
+任何有效的 AI 代理的核心是其规划能力，由大型语言模型（LLMs）提供支持。现代 LLMs 能够实现多种关键的规划功能：
+
+- 通过思维链推理进行任务分解
+
+- 对过去的行为和信息进行自我反思
+
+- 通过自适应学习改进未来的决策
+
+- 当前进展的批判性分析
+
+# agent 要素
 一般来说agent有三大核心要素，一是架构，二是反馈信息，三是prompt
 
 ## 架构：
