@@ -8,7 +8,7 @@
 
 ### 架构
 
-https://www.promptingguide.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Freflexion.1053729e.png&w=1920&q=75
+<img width="939" height="673" alt="image" src="https://github.com/user-attachments/assets/952aa550-0f61-44ed-aaa9-e9f56e1e35eb" />
 
 #### Reflexion 由三个不同的模型组成
 
