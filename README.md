@@ -11,7 +11,7 @@
 
 ## Reflexion框架
 
-- https://www.promptingguide.ai/techniques/reflexion
+- [https://www.promptingguide.ai/techniques/reflexion](https://github.com/00menghui00/AI-Research/blob/Agent/Agent%E6%A1%86%E6%9E%B6%E6%96%87%E7%AB%A0/Reflexion.md)
 
 ----
 ----
