@@ -1,5 +1,8 @@
 # Agent Research
 
+agent资源：
+- https://www.promptingguide.ai/
+
 # 研究方向：
 ## Agent核心（综述型）
 对Agent的关键构建成分综述。
