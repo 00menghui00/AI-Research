@@ -6,6 +6,9 @@
 - Reflexion 是一个通过语言反馈强化基于语言的智能体的框架。根据 Shinn 等人 (2023) 的研究，"Reflexion 是一种新的‘语言’强化范式，将策略参数化为智能体的记忆编码与 LLM 参数选择相结合。"
 - 从高层次来看，Reflexion 将环境中的反馈（无论是自由形式的语言还是标量）转换为语言反馈，也称为自我反思，作为 LLM 智能体在下一集中的上下文。这有助于智能体快速有效地从过去的错误中学习，从而在许多高级任务上提高性能。
 
+### 架构
+https://www.promptingguide.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Freflexion.1053729e.png&w=1920&q=75
+#### Reflexion 由三个不同的模型组成
 
 
 
