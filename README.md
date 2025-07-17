@@ -2,6 +2,7 @@
 
 agent资源：
 - https://www.promptingguide.ai/
+- https://www.ibm.com/think/ai-agents#605511093
 
 # 研究方向：
 ## Agent核心（综述型）
