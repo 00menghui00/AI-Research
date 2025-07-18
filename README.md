@@ -1,4 +1,4 @@
 # Research
 
 ## MCP框架
-- fastmcp：
+- fastmcp：https://gofastmcp.com/getting-started/welcome
