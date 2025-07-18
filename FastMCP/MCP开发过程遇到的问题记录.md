@@ -1,0 +1,4 @@
+# 使用FastMCP架构开发过程中遇到的一些问题
+
+## Server-Sent Events（SSE）请求超时问题
+当mcp的server端服务需要长时间运行才能给出反馈时，容易导致客户端等待超时。
