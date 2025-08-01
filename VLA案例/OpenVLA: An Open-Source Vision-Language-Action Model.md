@@ -7,8 +7,8 @@
 
 ## 模型架构：
 ### vision encoder（视觉编码器）
-
+用 DINOv2 + SigLIP 深度感知世界
 ### projector（投影器）
-
+将视觉信息无缝传递给大脑
 ### LLM backbone（LLM主干）
-
+用 Llama 2 进行统一的思考和决策，直接输出行动指令
