@@ -7,3 +7,4 @@
 
 ## 工具：
 - 搜索引擎调用：Tavily Search Engine
+- 记忆管理：memory
