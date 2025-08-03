@@ -1,16 +1,9 @@
-# langgraph核心组件
+# langgraph 
 
-## state（状态管理功能）
-“状态”功能充当一个记忆库，记录和跟踪 AI 系统处理的所有有价值的信息。它类似于一个数字笔记本，系统在通过工作流或图分析的各个阶段时捕获和更新数据。
+## 组件：
+- node
+- edge
+- stategraph
 
-## Graph architecture（图架构）
-### Stateful graphs
-### Cyclical graph
-### Nodes
-### Edges
-
-## Tools(工具)
-### RAG
-### Workflows
-### APIs
-### LangSmith
+## 工具：
+- 搜索引擎调用：Tavily Search Engine
