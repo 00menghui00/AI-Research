@@ -10,21 +10,21 @@
 
 ### 1. 核心优化公式
 
-```latex
 $$
 J(\theta)
-= \displaystyle
+\;=\;
 \mathbb{E}_{\tau\sim\pi_{\theta}}\Bigl[
   R(\tau)
-  - \beta \sum_{t=0}^{T}
+  \;-\;
+  \beta \sum_{t=0}^{T}
     D_{\mathrm{KL}}\bigl(
       \pi_{\theta}(a_t\mid s_t)
-      \,\big\|\,
+      \,\big\|\, 
       \pi_{\mathrm{ref}}(a_t\mid s_t)
     \bigr)
 \Bigr]
 $$
-````
+
 
 ---
 
