@@ -1,6 +1,7 @@
 # Proximal Policy Optimization Algorithms
 
-
+## 概述：
+1. PPO 就像一个谨慎的优化器。它不会让新模型在更新中失控，而是将其保持“近端”，不会偏离旧模型太远。这可以防止灾难性的遗忘和模型崩溃。
 
 
 
