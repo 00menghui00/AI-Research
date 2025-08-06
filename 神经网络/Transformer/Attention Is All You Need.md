@@ -30,5 +30,5 @@
 多头注意力允许模型在不同位置同时关注来自不同表示子空间的信息。使用单个注意力头时，平均操作会抑制这一点。通过将每个头的维度降低（d_k = d_model / h），多头注意力的总计算量与原始的单头全维度注意力大致相当。
 
 - MultiHead(Q, K, V) = Concat(head_1, head_2, ..., head_h) * W_O
-其中，每一个 head_i 的计算方式为:
+     其中，每一个 head_i 的计算方式为:
 - head_i = Attention(Q * W_Q_i, K * W_K_i, V * W_V_i)
