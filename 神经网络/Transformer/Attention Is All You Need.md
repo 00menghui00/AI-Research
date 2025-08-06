@@ -1,5 +1,6 @@
 # Attention Is All You Need
 - 论文地址：https://arxiv.org/html/1706.03762?_immersive_translate_auto_translate=1
+- 代码实现：https://nlp.seas.harvard.edu/2018/04/03/attention.html
 
 ## 概述：
 - 我们提出了 Transformer，一种避免递归、完全依赖于注意力机制来建立输入和输出之间全局依赖关系的模型架构，Transformer 允许显著更多的并行化。
