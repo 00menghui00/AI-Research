@@ -11,6 +11,184 @@
 ---
 ---
 
+# Transformer 架构
+---
+
+### **一、Transformer 架构的宏观视图**
+
+Transformer 模型在原论文中被设计为一个 **Encoder-Decoder** 架构，主要用于序列到序列（Seq2Seq）的任务，如机器翻译。然而，其核心组件 **Encoder** 和 **Decoder** 后来被独立出来，分别发展成了两大模型家族（如 BERT 使用 Encoder，GPT 使用 Decoder）。
+
+*   **核心哲学**：完全抛弃了传统的循环（RNN）和卷积（CNN）结构，仅依赖**自注意力机制 (Self-Attention)** 来捕捉输入和输出序列中的全局依赖关系。
+*   **两大优势**：
+    1.  **强大的长距离依赖捕捉能力**：自注意力可以直接计算序列中任意两个位置的关系，不受距离限制。
+    2.  **高度的并行计算能力**：没有了 RNN 的序列化依赖，所有位置的计算可以同时进行，极大地提升了训练效率。
+
+---
+
+### **二、核心组件、原理与连接方式**
+
+#### **1. 输入预处理 (Input Pre-processing)**
+
+这是数据进入模型主体的“三步走”准备阶段。
+
+*   **组件与作用**：
+    1.  **分词器 (Tokenizer)**：将原始文本切分成一系列的 **Tokens**，并映射为 **Token IDs**。这是语言的数字化。
+    2.  **词嵌入层 (Token Embedding Layer)**：根据 Token ID，从一个巨大的**嵌入矩阵**中查找出对应的**词嵌入向量**。这是赋予 Token 基础语义的过程。
+    3.  **位置编码 (Positional Encoding)**：生成一个与词嵌入维度相同的**位置向量**，通过**向量加法**注入到词嵌入中。这是为了弥补 Transformer 缺乏顺序信息的缺陷。
+*   **连接方式**：`最终输入 = 词嵌入向量 + 位置编码向量`。
+
+#### **2. Encoder（编码器）**
+
+Encoder 的任务是**理解和消化**输入的源序列（如待翻译的德语句子），并将其转换成一系列富含上下文信息的向量表示。一个 Encoder 由 **N** 层相同的 **Encoder Layer** 堆叠而成。
+
+*   **Encoder Layer 的内部结构**：每个 Encoder Layer 包含两个核心子层。
+    1.  **多头自注意力模块 (Multi-Head Self-Attention)**：
+        *   **作用**：让输入序列中的每个词都能“看到”并评估序列中所有其他词对它的重要性，从而捕捉句子内部的复杂依赖关系。
+        *   **原理**：通过 `h` 组独立的 `W_i^Q, W_i^K, W_i^V` 权重矩阵，将输入向量投影到 `h` 个不同的低维子空间。在每个子空间内并行计算**缩放点积注意力**，然后将 `h` 个头的输出**拼接**并通过一个最终的线性层 `W^O` 进行融合。
+    2.  **前馈网络 (Position-wise Feed-Forward Network, FFN)**：
+        *   **作用**：对自注意力模块输出的每一个向量进行独立的、深度的**非线性变换**，提取更高级、更抽象的特征。
+        *   **原理**：通常由两个线性层和一个非线性激活函数（如 GELU/ReLU）组成。通过一个“升维（`d_model` -> `4*d_model`）- 激活 - 降维（`4*d_model` -> `d_model`）”的沙漏型结构，实现高效的特征提取和信息筛选。
+
+*   **子层间的连接方式**：在**每一个**子层（自注意力和 FFN）的输出端，都使用了**残差连接 (Residual Connection)** 和**层归一化 (Layer Normalization)**。
+    *   `x_sublayer_output = LayerNorm(x_input + Sublayer(x_input))`
+    *   **作用**：残差连接搭建“信息高速公路”，防止信息丢失和梯度消失；层归一化扮演“交通警察”，稳定数据分布，加速训练。
+
+#### **3. Decoder（解码器）**
+
+Decoder 的任务是接收 Encoder 输出的上下文信息，并结合已经生成的部分目标序列，**自回归地 (Autoregressively)** 生成下一个词。一个 Decoder 由 **N** 层相同的 **Decoder Layer** 堆叠而成。
+
+*   **Decoder Layer 的内部结构**：每个 Decoder Layer 包含**三个**核心子层。
+    1.  **带掩码的多头自注意力模块 (Masked Multi-Head Self-Attention)**：
+        *   **作用**：与 Encoder 中的自注意力类似，但增加了一个**掩码 (Mask)**。这个掩码会阻止当前位置注意到**未来**的位置。
+        *   **原理**：在计算注意力分数时，将未来位置的分数设置为一个极大的负数（如 `-infinity`），这样经过 Softmax 后，这些位置的权重就变成了 0。这确保了模型在预测第 `t` 个词时，只能依赖于第 `1` 到 `t-1` 个已经生成的词。
+    2.  **编码器-解码器注意力模块 (Encoder-Decoder Attention)**：
+        *   **作用**：这是连接 Encoder 和 Decoder 的**桥梁**。它允许 Decoder 中的每个位置，都能关注和提取来自 **Encoder 输出的整个源序列**中最相关的信息。
+        *   **原理**：它的 **Query (Q)** 来自于前一个子层（带掩码的自注意力）的输出；而它的 **Key (K)** 和 **Value (V)** 则来自于 **Encoder 最后一层的输出**。这相当于 Decoder 在问：“根据我现在需要生成的内容（Q），我应该从原始德语句子（K, V）的哪些部分获取信息？”
+    3.  **前馈网络 (FFN)**：
+        *   与 Encoder 中的 FFN 完全相同，作用依然是进行深度的非线性特征变换。
+
+*   **子层间的连接方式**：与 Encoder 完全相同，**每一个**子层（共三个）后面都紧跟着一次**残差连接**和**层归一化**。
+
+#### **4. 最终输出层 (Final Output Layer)**
+
+*   **作用**：将 Decoder 最后一层输出的向量，转换为对下一个词的预测概率。
+*   **组件与连接方式**：
+    1.  **线性层 (Linear Layer)**：也叫 LM Head，将 Decoder 输出的 `d_model` 维向量，投影到整个目标词汇表的大小 `V_vocab`。
+    2.  **Softmax 函数**：将投影后的 Logits 向量，转换成一个和为 1 的概率分布，表示词汇表中每个词是下一个正确答案的概率。
+
+---
+
+### **三、参数的学习与反向传播**
+
+#### **1. 预定义参数 (Hyperparameters)**
+
+这些参数是在模型设计和训练开始前，由人工设定的“蓝图”参数。
+*   `N`：Encoder 和 Decoder 的层数。
+*   `d_model`：模型内部向量的主要维度，如 512。
+*   `h`：多头注意力的头数，如 8。
+*   `d_k`, `d_v`：每个头中 Q, K, V 向量的维度，通常为 `d_model / h`。
+*   `d_ff`：FFN 中间隐藏层的维度，通常为 `4 * d_model`。
+*   Dropout 率、学习率、优化器类型等。
+
+#### **2. 可学习参数 (Trainable Parameters)**
+
+这些是模型在训练过程中，通过反向传播和梯度下降不断优化的“知识”参数。
+*   **词嵌入矩阵**：模型对每个 Token 基础语义的理解。
+*   **所有 Encoder 和 Decoder 层中的权重矩阵**：
+    *   多头注意力中的 `W_i^Q, W_i^K, W_i^V` 和 `W^O`。
+    *   FFN 中的两个线性层的权重 `W1, W2` 和偏置 `b1, b2`。
+*   **最终输出层的线性层权重**。
+
+#### **3. 反向传播学习机制**
+
+1.  **起点**：从**最终的损失函数**开始。在机器翻译任务中，损失函数（如交叉熵损失）会计算模型预测的词（概率分布）与真实的目标词之间的差距。
+2.  **梯度计算**：这个“差距”（误差）会以**梯度**的形式，从模型的顶端（输出层）开始，逆着数据前向传播的路径，逐层向后传递。
+3.  **链式法则**：梯度在每一层都会根据**链式法则**进行计算。例如，当梯度信号到达多头注意力的 `W^O` 矩阵时，它会计算出 `W^O` 对最终总误差的“贡献度”，并告诉 `W^O` 中的每一个权重应该如何微调（增大或减小）才能降低这个误差。
+4.  **路径**：梯度会穿过 Decoder 的所有层（更新其中的 FFN、Encoder-Decoder Attention、Masked Self-Attention 的所有权重），然后通过 Encoder-Decoder Attention 的 K 和 V 路径，进入到 Encoder 的顶层，再逐层穿过所有 Encoder 层，最终到达最底部的词嵌入矩阵，并对其进行更新。
+5.  **优化器更新**：在计算出所有可学习参数的梯度后，**优化器**（如 Adam）会根据这些梯度和设定的学习率，对所有参数进行一次统一的、微小的更新。
+6.  **循环往复**：这个“前向计算 -> 计算误差 -> 反向传播梯度 -> 更新参数”的过程会重复数百万次，直到模型收敛，损失不再显著下降。
+
+---
+
+### **四、Transformer 架构流程图**
+
+```mermaid
+graph TD
+    subgraph Input Processing
+        A[原始输入序列] --> B{分词器 Tokenizer};
+        B --> C[Token ID 序列];
+        C --> D[词嵌入层 Embedding Lookup];
+        D --> E[词嵌入向量];
+        F[位置编码 Positional Encoding] --> G((+));
+        E --> G;
+        G --> H[最终输入向量];
+    end
+
+    subgraph Encoder Stack (N层)
+        H --> I[Encoder Layer 1];
+        I --> J[...];
+        J --> K[Encoder Layer N];
+    end
+
+    subgraph Decoder Stack (N层)
+        L[目标序列 (右移)] --> M{分词器 Tokenizer};
+        M --> N[Token ID 序列];
+        N --> O[词嵌入层 Embedding Lookup];
+        O --> P[词嵌入向量];
+        Q[位置编码 Positional Encoding] --> R((+));
+        P --> R;
+        R --> S[Decoder Layer 1];
+        S --> T[...];
+        T --> U[Decoder Layer N];
+    end
+
+    subgraph Encoder Layer
+        direction LR
+        i_in[输入] --> i_mha[多头自注意力];
+        i_in --> i_add1((+));
+        i_mha --> i_add1;
+        i_add1 --> i_norm1[层归一化];
+        i_norm1 --> i_ffn[前馈网络 FFN];
+        i_norm1 --> i_add2((+));
+        i_ffn --> i_add2;
+        i_add2 --> i_norm2[层归一化];
+        i_norm2 --> i_out[输出];
+    end
+
+    subgraph Decoder Layer
+        direction LR
+        d_in[输入] --> d_masked_mha[带掩码的多头自注意力];
+        d_in --> d_add1((+));
+        d_masked_mha --> d_add1;
+        d_add1 --> d_norm1[层归一化];
+        d_norm1 --> d_enc_dec_attn[编码器-解码器注意力];
+        d_norm1 --> d_add2((+));
+        d_enc_dec_attn --> d_add2;
+        d_add2 --> d_norm2[层归一化];
+        d_norm2 --> d_ffn[前馈网络 FFN];
+        d_norm2 --> d_add3((+));
+        d_ffn --> d_add3;
+        d_add3 --> d_norm3[层归一化];
+        d_norm3 --> d_out[输出];
+    end
+
+    K --> d_enc_dec_attn;
+
+    subgraph Final Output
+        U --> V[线性层 Linear];
+        V --> W[Softmax];
+        W --> X[输出概率分布];
+    end
+
+    style Encoder Layer fill:#f9f,stroke:#333,stroke-width:2px
+    style Decoder Layer fill:#ccf,stroke:#333,stroke-width:2px
+```
+
+
+---
+---
+
+
 # 自注意力机制：
 
 注意力机制本质上是一种算法，用于确定 AI 模型在任何特定时刻应该“关注”数据序列的哪些部分。自注意力机制的核心目的：当模型处理一句话中的某一个词时（比如 "apple"），自注意力机制能帮助模型判断，这句话里的其他哪些词对于理解 "apple" 这个词的当前含义最重要。
