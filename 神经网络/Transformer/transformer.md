@@ -114,75 +114,117 @@ Decoder 的任务是接收 Encoder 输出的上下文信息，并结合已经生
 
 ```mermaid
 graph TD
-    subgraph Input Processing
-        A[原始输入序列] --> B{分词器 Tokenizer};
-        B --> C[Token ID 序列];
-        C --> D[词嵌入层 Embedding Lookup];
-        D --> E[词嵌入向量];
-        F[位置编码 Positional Encoding] --> G((+));
-        E --> G;
-        G --> H[最终输入向量];
+    subgraph "输入处理 (Encoder Input)"
+        A["源序列  
+Source Sequence"] --> B{"分词器  
+Tokenizer"};
+        B --> C["词嵌入 + 位置编码  
+Embedding + Positional Encoding"];
     end
 
-    subgraph Encoder Stack (N层)
-        H --> I[Encoder Layer 1];
-        I --> J[...];
-        J --> K[Encoder Layer N];
+    subgraph "编码器 (Encoder Stack)"
+        C --> D["N x Encoder Layers"];
     end
 
-    subgraph Decoder Stack (N层)
-        L[目标序列 (右移)] --> M{分词器 Tokenizer};
-        M --> N[Token ID 序列];
-        N --> O[词嵌入层 Embedding Lookup];
-        O --> P[词嵌入向量];
-        Q[位置编码 Positional Encoding] --> R((+));
-        P --> R;
-        R --> S[Decoder Layer 1];
-        S --> T[...];
-        T --> U[Decoder Layer N];
+    subgraph "解码器 (Decoder Stack)"
+        E["目标序列 (已生成部分)  
+Target Sequence (Shifted Right)"] --> F{"分词器  
+Tokenizer"};
+        F --> G["词嵌入 + 位置编码  
+Embedding + Positional Encoding"];
+        G --> H["N x Decoder Layers"];
+    end
+    
+    subgraph "输出处理 (Final Output)"
+        H --> I["线性层  
+Linear Layer"];
+        I --> J["Softmax"];
+        J --> K["输出概率分布  
+Output Probabilities"];
     end
 
-    subgraph Encoder Layer
-        direction LR
-        i_in[输入] --> i_mha[多头自注意力];
-        i_in --> i_add1((+));
-        i_mha --> i_add1;
-        i_add1 --> i_norm1[层归一化];
-        i_norm1 --> i_ffn[前馈网络 FFN];
-        i_norm1 --> i_add2((+));
-        i_ffn --> i_add2;
-        i_add2 --> i_norm2[层归一化];
-        i_norm2 --> i_out[输出];
-    end
+    D -- "记忆 (Memory K, V)" --> H;
 
-    subgraph Decoder Layer
-        direction LR
-        d_in[输入] --> d_masked_mha[带掩码的多头自注意力];
-        d_in --> d_add1((+));
-        d_masked_mha --> d_add1;
-        d_add1 --> d_norm1[层归一化];
-        d_norm1 --> d_enc_dec_attn[编码器-解码器注意力];
-        d_norm1 --> d_add2((+));
-        d_enc_dec_attn --> d_add2;
-        d_add2 --> d_norm2[层归一化];
-        d_norm2 --> d_ffn[前馈网络 FFN];
-        d_norm2 --> d_add3((+));
-        d_ffn --> d_add3;
-        d_add3 --> d_norm3[层归一化];
-        d_norm3 --> d_out[输出];
-    end
+    style D fill:#f9f,stroke:#333,stroke-width:2px;
+    style H fill:#ccf,stroke:#333,stroke-width:2px;
 
-    K --> d_enc_dec_attn;
-
-    subgraph Final Output
-        U --> V[线性层 Linear];
-        V --> W[Softmax];
-        W --> X[输出概率分布];
-    end
-
-    style Encoder Layer fill:#f9f,stroke:#333,stroke-width:2px
-    style Decoder Layer fill:#ccf,stroke:#333,stroke-width:2px
 ```
+
+```mermaid
+graph TD
+    subgraph "Encoder Layer"
+        A_in["上一层的输出  
+Input from Previous Layer"] --> B_mha["多头自注意力  
+Multi-Head Attention"];
+        
+        subgraph "Add & Norm 1"
+            A_in --> C_add1(("+"));
+            B_mha --> C_add1;
+            C_add1 --> D_norm1["层归一化  
+Layer Norm"];
+        end
+
+        D_norm1 --> E_ffn["前馈网络  
+Feed-Forward Network"];
+
+        subgraph "Add & Norm 2"
+            D_norm1 --> F_add2(("+"));
+            E_ffn --> F_add2;
+            F_add2 --> G_norm2["层归一化  
+Layer Norm"];
+        end
+        
+        G_norm2 --> H_out["输出到下一层  
+Output to Next Layer"];
+    end
+
+
+
+```
+```mermaid
+graph TD
+    subgraph "Decoder Layer"
+        A_in["上一层的输出  
+Input from Prev. Decoder Layer"] --> B_masked_mha["带掩码的多头自注意力  
+Masked Multi-Head Attention"];
+        
+        subgraph "Add & Norm 1"
+            A_in --> C_add1(("+"));
+            B_masked_mha --> C_add1;
+            C_add1 --> D_norm1["层归一化  
+Layer Norm"];
+        end
+
+        Enc_Out["来自 Encoder 的输出  
+Output from Encoder"] --> E_enc_dec_attn["编码器-解码器注意力  
+Encoder-Decoder Attention"];
+        D_norm1 -- "Query (Q)" --> E_enc_dec_attn;
+
+        subgraph "Add & Norm 2"
+            D_norm1 --> F_add2(("+"));
+            E_enc_dec_attn --> F_add2;
+            F_add2 --> G_norm2["层归一化  
+Layer Norm"];
+        end
+
+        G_norm2 --> H_ffn["前馈网络  
+Feed-Forward Network"];
+
+        subgraph "Add & Norm 3"
+            G_norm2 --> I_add3(("+"));
+            H_ffn --> I_add3;
+            I_add3 --> J_norm3["层归一化  
+Layer Norm"];
+        end
+
+        J_norm3 --> K_out["输出到下一层  
+Output to Next Decoder Layer"];
+    end
+
+
+```
+
+
 
 
 ---
