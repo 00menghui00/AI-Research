@@ -1,6 +1,11 @@
 # Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context(2019)
 - 论文地址：https://ar5iv.labs.arxiv.org/html/1901.02860?_immersive_translate_auto_translate=1
-- 
+
+---
+
+## 概述：
+- Transformer-XL为了解决两个问题：固定长度的上下文，上下文碎片化
+
 
 ---
 ---
