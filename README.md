@@ -1,6 +1,6 @@
 # Research
 
-源码：
+- 开源大模型代码：https://github.com/huggingface/transformers/tree/main/src/transformers/models
 
 ---
 
