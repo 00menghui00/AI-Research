@@ -1,6 +1,6 @@
 # Training language models to follow instructions with human feedback（2022，openai）
 - 论文地址：https://ar5iv.labs.arxiv.org/html/2203.02155?_immersive_translate_auto_translate=1
-- 博客地址：https://blog.csdn.net/qq_56591814/article/details/130588064
+- 讲解博客地址：https://blog.csdn.net/qq_56591814/article/details/130588064
 
 
 ---
